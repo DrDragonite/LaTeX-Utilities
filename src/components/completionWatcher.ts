@@ -107,6 +107,10 @@ export class CompletionWatcher {
     }
 
     public async watcher(e: vscode.TextDocumentChangeEvent) {
+        if (e.reason == vscode.TextDocumentChangeReason.Undo) {
+            return
+        }
+        
         if (+new Date() - this.configAge > this.MAX_CONFIG_AGE) {
             this.enabled = vscode.workspace.getConfiguration('latex-utilities').get('liveReformat.enabled') as boolean
             this.loadSnippets()
